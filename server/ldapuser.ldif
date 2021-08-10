@@ -1,0 +1,16 @@
+dn: uid=my_user,ou=People,dc=devopslab,dc=com
+objectClass: top
+objectClass: account
+objectClass: posixAccount
+objectClass: shadowAccount
+cn: my_user
+uid: my_user
+uidNumber: 1005
+gidNumber: 1005
+homeDirectory: /home/my_user
+userPassword: %CHANGE_TO_LDAP_USER_PASSWORD%
+loginShell: /bin/bash
+gecos: my_user
+shadowLastChange: 0
+shadowMax: -1
+shadowWarning: 0

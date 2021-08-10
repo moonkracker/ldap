@@ -1,0 +1,44 @@
+version: "3.9"
+services:
+  server:
+    environment: 
+      LDAP_ROOT_PASSWORD: root
+      LDAP_MANAGER_PASSWORD: root
+      LDAP_USER_PASSWORD: root
+    container_name: ldap_server
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    restart: always
+
+  client:
+    container_name: ldap_client
+    restart: always
+    depends_on:
+      server:
+        condition: service_started
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    environment: 
+      ldapserver: server
+      ldapbasedn: dc=devopslab
+  
+  admin_page:
+    container_name: ldap_admin_page
+    restart: always
+    environment:
+      PHPLDAPADMIN_LDAP_HOSTS: "ldap_server"
+      PHPLDAPADMIN_HTTPS: "false"
+    depends_on:
+      server:
+        condition: service_started
+    image: osixia/phpldapadmin:latest
+    ports:
+    - published: 80
+      target: 80
+    
+  ssh:
+    image: pschmitt/sshd
+    container_name: ldap_ssh
+    restart: always

@@ -1,0 +1,13 @@
+FROM centos:7
+
+LABEL maintainer=mkananovich
+
+RUN yum -y install openldap-clients nss-pam-ldapd authconfig
+
+CMD authconfig --enableldap \
+               --enableldapauth \
+               --ldapserver=dlp.devopslab \
+               --ldapbasedn="dc=devopslab" \
+               --enablemkhomedir \
+               --update && \
+    sleep infinity
